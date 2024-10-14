@@ -14,14 +14,14 @@ public class Shooting : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))  // Fire1 по умолчанию привязан к ЛКМ или Ctrl
         {
             // Создаем копию пули на позиции точки стрельбы и в том же направлении
-            GameObject bulletCopy = Instantiate(bulletPrefab, shootingPoint.position, shootingPoint.rotation);
+            GameObject bulletCopy = Instantiate(bulletPrefab, shootingPoint.position, transform.rotation * Quaternion.Euler(0, 90, 0));
 
             // Проверяем, есть ли у пули компонент Rigidbody
             Rigidbody rb = bulletCopy.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 // Применяем силу для перемещения пули в направлении вперед относительно точки стрельбы (оси X)
-                rb.velocity = shootingPoint.forward * bulletSpeed;
+                rb.velocity = transform.forward * bulletSpeed;
             }
         }
     }
