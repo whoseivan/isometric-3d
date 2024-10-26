@@ -1,20 +1,20 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewQuest", menuName = "Quests/Quest")]
-public class QuestSO : ScriptableObject, IQuest
+public enum QuestStatus
 {
-    [SerializeField] private string questName;
-    [SerializeField] private string description;
-    [SerializeField] private bool isCompleted;
+    InProgress,
+    Completed
+}
 
-    public string QuestName => questName;
-    public string Description => description;
-    public bool IsCompleted => isCompleted;
+[CreateAssetMenu(fileName = "New Quest", menuName = "Quest")]
+public class QuestSO : ScriptableObject
+{
+    public string QuestName;
+    public string Description;
+    public QuestStatus Status = QuestStatus.InProgress; // »значально квест в процессе
 
     public void CompleteQuest()
     {
-        isCompleted = true;
-        Debug.Log(" вест завершен: " + questName);
+        Status = QuestStatus.Completed;
     }
 }
-
