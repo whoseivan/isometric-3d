@@ -3,39 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class Stamina : MonoBehaviour
 {
-    [Header("Stamina settings")]
-    public float currentStamina = 100f;
-    public float drainValue;
-    public float recoveryValue;
-
+    public float staminaValue = 100;
     public Slider staminaSlider;
 
-    private void Start()
-    {
-        staminaSlider.maxValue = 100;
-        staminaSlider.value = currentStamina;
-    }
+    public float drainValue = 30;
+    public float recoveryValue = 15;
 
     public void staminaDrain()
     {
-        currentStamina -= drainValue * Time.deltaTime;
+        staminaValue -= drainValue * Time.deltaTime;
     }
 
     public void staminaRecovery()
     {
-        currentStamina += recoveryValue * Time.deltaTime;
+        staminaValue += recoveryValue * Time.deltaTime;
+    }
+
+    private void Start()
+    {
+        staminaSlider.maxValue = staminaValue;
     }
 
     private void Update()
     {
-        staminaSlider.value = currentStamina;
+        if (staminaValue < 0)
+            staminaValue = 0;
 
-        if (currentStamina > 100)
-            currentStamina = 100;
-        if (currentStamina < 0)
-            currentStamina = 0;
+        if (staminaValue > 100)
+            staminaValue = 100;
+
+        staminaSlider.value = staminaValue;
     }
 }

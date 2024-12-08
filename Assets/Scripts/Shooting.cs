@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Shooting : MonoBehaviour
@@ -7,6 +8,14 @@ public class Shooting : MonoBehaviour
     public Transform shootingPoint;  // Точка стрельбы
     public GameObject bulletPrefab;  // Префаб пули
     public float bulletSpeed = 20f;  // Скорость пули
+    public AudioClip bulletSound;
+
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -20,8 +29,12 @@ public class Shooting : MonoBehaviour
             Rigidbody rb = bulletCopy.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                // Применяем силу для перемещения пули в направлении вперед относительно точки стрельбы (оси X)
-                rb.velocity = transform.forward * bulletSpeed;
+                Vector3 position = transform.forward;
+                    position.y = 0f;
+                    rb.velocity =  position * bulletSpeed;
+
+                audioSource.PlayOneShot(bulletSound);
+
             }
         }
     }

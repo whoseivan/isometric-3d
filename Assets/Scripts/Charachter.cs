@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,14 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 [AddComponentMenu("Player Controller/Isometric Character with Jump")]
 
-public class IsometricCharacter : MonoBehaviour
+public class Charachter : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 5.0f;
-    public float runSpeed = 10.0f;
+    public float shiftSpeed = 10.0f;
     public float gravity = -9.81f;        // ???? ??????????
     public float jumpHeight = 2.0f;       // ?????? ??????
     public float rotationSpeed = 720f;    // ???????? ???????? ?????????
+
+    private float basicSpeed = 5.0f;
 
     [Header("Camera Settings")]
     public Transform cameraTransform;      // ?????? ?? ??????
@@ -20,8 +23,6 @@ public class IsometricCharacter : MonoBehaviour
     private CharacterController _charController;
     private Vector3 _velocity;             // ??????? ???????? ?????????
     private bool _isGrounded;              // ????, ????????? ?? ???????? ?? ?????
-    private bool _isTired = false;
-    private float basicSpeed = 5.0f;
     private Stamina _stamina;
 
     void Start()
@@ -84,20 +85,22 @@ public class IsometricCharacter : MonoBehaviour
             _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && !_isTired)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            walkSpeed = runSpeed;
-            _stamina.staminaDrain();
-
-            if (_stamina.currentStamina < 1)
-                _isTired = true;
+            if (_stamina.staminaValue > 1)
+            {
+                _stamina.staminaDrain();
+                walkSpeed = shiftSpeed;
+            }
+            else
+            {
+                walkSpeed = basicSpeed;
+            }
         }
         else
         {
-            walkSpeed = basicSpeed;
             _stamina.staminaRecovery();
-            if (_stamina.currentStamina > 30)
-                _isTired = false;
+            walkSpeed = basicSpeed;
         }
 
         // ????????? ???????????? ???????? ? ????????

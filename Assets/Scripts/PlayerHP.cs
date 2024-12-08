@@ -5,32 +5,64 @@ using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
-    public Slider HPslider;
+    public float playerHP = 100;
+    public float armorValue = 50;
 
-    private int HP = 100;
+    public Slider sliderHP;
+    public Slider sliderArmor;
 
-    private void Start()
+    public AudioClip damageSound;
+    public AudioClip medkitSound;
+    public AudioClip armorRestoreSound;
+    public AudioClip armorLoseSound;
+
+    private AudioSource audioSource;
+
+    void Start()
     {
-        HPslider.maxValue = 100;
+        sliderHP.maxValue = 100;
+        sliderArmor.maxValue = 100;
+        audioSource = GetComponent<AudioSource>();
     }
 
-    private void Update()
+    // Update is called once per frame
+    void FixedUpdate()
     {
-        HPslider.value = HP;
-
-        if (HP > 100)
-            HP = 100;
-        if (HP < 0)
-            HP = 0;
+        sliderHP.value = playerHP;
+        sliderArmor.value = armorValue;
     }
 
-    public void getDamage(int damagePoints)
+    public void ChangeHP(float hpPoints)
     {
-        HP -= damagePoints;
-    }
-
-    public void getRecovery(int recoveryPoints)
-    {
-        HP += recoveryPoints;
+        if (hpPoints < 0) // Это урон
+        {
+            if (armorValue > 0)
+            {
+                armorValue += hpPoints;
+                audioSource.PlayOneShot(armorLoseSound);
+            }
+            else
+            {
+                playerHP += hpPoints;
+                audioSource.PlayOneShot(damageSound);
+            }
+        }
+        else
+        {
+            if (playerHP < 100)
+            {
+                playerHP += hpPoints;
+                audioSource.PlayOneShot(medkitSound);
+            }
+            else
+            {
+                armorValue += hpPoints;
+                audioSource.PlayOneShot(armorRestoreSound);
+            }
+        }
+        if (armorValue > 100)
+            armorValue = 100;
+        if (playerHP > 100)
+            playerHP = 100;
     }
 }
