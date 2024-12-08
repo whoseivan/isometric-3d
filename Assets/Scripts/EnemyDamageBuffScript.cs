@@ -8,11 +8,10 @@ public class EnemyDamageBuffScript : MonoBehaviour
 
     public void ButtonAction()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach(var enemy in enemies)
-        {
-            enemy.GetComponent<enemyScript>().enemyPoints /= effect;
-        }
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        player.GetComponent<enemyScript>().enemyPoints /= effect;
+
         Time.timeScale = 1;
         this.gameObject.SetActive(false);
     }
