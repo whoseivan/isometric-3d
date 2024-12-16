@@ -9,8 +9,11 @@ public class EnemyHP : MonoBehaviour
     public Slider enemySliderHP;
     public GameObject expPrefab;
 
+    private EnemiesCount enemiesCount;
     void Start()
     {
+        enemiesCount = FindObjectOfType<EnemiesCount>();
+
         enemySliderHP.maxValue = 100;
     }
 
@@ -18,22 +21,20 @@ public class EnemyHP : MonoBehaviour
     void FixedUpdate()
     {
         enemySliderHP.value = enemyHP;
-        if (enemyHP <= 0)
-        {
-            Vector3 position = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-            Instantiate(expPrefab, position, Quaternion.identity);
-            Destroy(gameObject);
-        }
-
     }
 
     public void ChangeHP(float hpPoints)
     {
+        enemyHP += hpPoints;
+
         if (enemyHP > 100)
             enemyHP = 100;
         if (enemyHP <= 0)
+        {
+            Vector3 position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            Instantiate(expPrefab, transform.position, Quaternion.identity);
+            enemiesCount.EnemyKilled();
             Destroy(gameObject);
-
-        enemyHP += hpPoints;
+        }
     }
 }

@@ -7,7 +7,6 @@ using TMPro;
 public class LevelSystem : MonoBehaviour
 {
     public Slider ExperienceSlider;
-    public TMP_Text levelText;
     public GameObject nextLevelPanel;
 
     private int currentLevel = 1;
@@ -17,7 +16,6 @@ public class LevelSystem : MonoBehaviour
     void Start()
     {
         ExperienceSlider.maxValue = 100;
-        levelText.text = currentLevel.ToString();
         nextLevelPanel.SetActive(false);
     }
 
@@ -34,7 +32,6 @@ public class LevelSystem : MonoBehaviour
         {
             currentExperience = currentExperience - experienceToNextLevel;
             currentLevel += 1;
-            levelText.text = currentLevel.ToString();
             ExperienceSlider.value = currentExperience;
             nextLevelPanel.SetActive(true);
             Time.timeScale = 0;
